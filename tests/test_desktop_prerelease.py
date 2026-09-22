@@ -16,13 +16,14 @@ COMMIT = "a" * 40
 TAG = f"desktop-v{prerelease.VERSION}-beta.1"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VERSION = prerelease.VERSION
-PUBLISHED_DESKTOP_VERSION = "0.3.9"
+PUBLISHED_DESKTOP_VERSION = "0.6.0"
 PUBLISHED_DESKTOP_TAG = f"desktop-v{PUBLISHED_DESKTOP_VERSION}-beta.1"
-PUBLISHED_SOURCE_VERSION = "0.5.1"
+PUBLISHED_SOURCE_VERSION = "0.6.0"
 HISTORICAL_DESKTOP_VERSION = "0.3.5"
 HISTORICAL_DESKTOP_TAG = f"desktop-v{HISTORICAL_DESKTOP_VERSION}-beta.1"
 PREVIOUS_DESKTOP_VERSION = "0.3.8"
 PREVIOUS_DESKTOP_TAG = f"desktop-v{PREVIOUS_DESKTOP_VERSION}-beta.1"
+FROZEN_DESKTOP_039_TAG = "desktop-v0.3.9-beta.1"
 
 
 def _sha256(path: Path) -> str:
@@ -610,7 +611,35 @@ def test_previous_desktop_v038_notes_remain_unchanged():
     assert release_notes == expected
 
 
-def test_published_prerelease_release_notes_match_approved_compact_copy():
+def test_historical_desktop_v039_notes_remain_unchanged():
+    release_notes = (REPO_ROOT / f"docs/releases/{FROZEN_DESKTOP_039_TAG}.md").read_text(
+        encoding="utf-8"
+    )
+    expected = textwrap.dedent(
+        """\
+        # codex-keysmith 桌面测试版
+
+        新增“恢复配置引用”入口。
+        """
+    )
+    assert release_notes == expected
+
+
+def test_desktop_v060_beta2_notes_match_approved_copy():
+    release_notes = (
+        REPO_ROOT / "docs/releases/desktop-v0.6.0-beta.2.md"
+    ).read_text(encoding="utf-8")
+    expected = textwrap.dedent(
+        """\
+        # codex-keysmith 桌面测试版
+
+        优化了安装包与部署。
+        """
+    )
+    assert release_notes == expected
+
+
+def test_published_prerelease_release_notes_match_approved_copy():
     release_notes = (
         REPO_ROOT / f"docs/releases/{PUBLISHED_DESKTOP_TAG}.md"
     ).read_text(encoding="utf-8")
@@ -618,7 +647,7 @@ def test_published_prerelease_release_notes_match_approved_compact_copy():
         """\
         # codex-keysmith 桌面测试版
 
-        新增“恢复配置引用”入口。
+        优化了安装包与部署。
         """
     )
     assert release_notes == expected
